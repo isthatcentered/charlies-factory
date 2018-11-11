@@ -1,12 +1,6 @@
-import _cloneDeep = require("lodash.clonedeep")
+import { factory } from "./index"
 
 
-
-
-function factory<T>( blueprint: T ): () => T
-{
-	return () => _cloneDeep( blueprint )
-}
 
 
 describe( `factory()`, () => {
