@@ -1,0 +1,31 @@
+{
+  "name": "@isthatcentered/charlies-factory",
+  "version": "0.1.1",
+  "description": "Making making objects easy",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "jest --watchAll"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/isthatcentered/charlies-factory.git"
+  },
+  "keywords": [
+    "factory",
+    "object"
+  ],
+  "author": "Edouard Penin <e.peninb@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/isthatcentered/charlies-factory/issues"
+  },
+  "homepage": "https://github.com/isthatcentered/charlies-factory#readme",
+  "devDependencies": {
+    "@types/jest": "^23.3.9",
+    "@types/lodash.clonedeep": "^4.5.4",
+    "jest": "^23.6.0",
+    "lodash.clonedeep": "^4.5.0",
+    "ts-jest": "^23.10.4",
+    "typescript": "^3.1.6"
+  }
+}
