@@ -43,24 +43,73 @@ describe( `factory()`, () => {
 	} )
 	
 	describe( `Triggering a state`, () => {
-		test( `I can trigger a registered state`, () => {
-			let makeBlueprint = factory( BLUEPRINT, {
-				stateOverride: {
-					name: "name from state",
+		let STATE: any
+		
+		beforeEach( () => {
+			STATE = {
+				name:    "state",
+				address: { street: "state" },
+			}
+			
+			MAKEBLUEPRINT = factory( BLUEPRINT, { state: STATE } )
+		} )
+		
+		test( `Triggered state is deeply merged on top of blueprint`, () => {
+			expect( MAKEBLUEPRINT( {}, "state" ) ).toEqual( {
+				...BLUEPRINT,
+				...STATE,
+				address: {
+					...BLUEPRINT.address,
+					...STATE.address,
 				},
 			} )
-			expect( makeBlueprint( {}, "stateName" ) ).toEqual( {
+		} )
+		
+		test( `Triggered state is overriden by override`, () => {
+			const overrides = {
+				address: { street: "overrides" },
+			}
+			
+			expect( MAKEBLUEPRINT( overrides, "state" ) ).toEqual( {
 				...BLUEPRINT,
-				name: "name from state",
+				...STATE,
+				address: {
+					...BLUEPRINT.address,
+					...STATE.address,
+					...overrides.address,
+				},
 			} )
 		} )
+	} )
+	
+	describe( `Triggering multiple states`, () => {
+		let STATEONE: any,
+		    STATETWO: any
 		
-		test( `State is deeply merged on top of blueprint`, () => {
-			fail( "todo" )
+		beforeEach( () => {
+			STATEONE = {
+				name:    "stateOne",
+				address: { street: "stateOne" },
+			}
+			
+			STATETWO = {
+				address: { street: "stateTwo" },
+			}
+			
+			MAKEBLUEPRINT = factory( BLUEPRINT, { stateOne: STATEONE, stateTwo: STATETWO } )
 		} )
 		
-		test( `State is deeply merged on top of overrides`, () => {
-			fail( "todo" )
+		test( `Each step is applied on top of the other in call order`, () => {
+			expect( MAKEBLUEPRINT( null, "stateOne", "stateTwo" ) ).toEqual( {
+				...BLUEPRINT,
+				...STATEONE,
+				...STATETWO,
+				address: {
+					...BLUEPRINT.address,
+					...STATEONE.address,
+					...STATETWO.address,
+				},
+			} )
 		} )
 	} )
 } )

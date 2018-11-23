@@ -1,6 +1,6 @@
 {
     "name": "@isthatcentered/charlies-factory",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "description": "Making making objects easy",
     "main": "dist/index.js",
     "scripts": {

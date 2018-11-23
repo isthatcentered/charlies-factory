@@ -4,7 +4,20 @@ import _merge = require("lodash.merge")
 
 
 
-export function factory<T>( blueprint: T ): ( overrides: Partial<T> ) => T
+interface statesPatches
 {
-	return ( overrides ) => _merge(_cloneDeep( blueprint ), overrides)
+	[ stateName: string ]: object
+}
+
+
+export function factory<T>( blueprint: T, states: statesPatches = {} ): ( overrides: Partial<T>, ...stateName: string[] ) => T
+{
+	return ( overrides, ...stateNames ) => {
+		
+		const appliedStates = stateNames
+			.map( name => states[ name ] )
+			.reduce( ( state, currState ) => ({ ...state, ...currState }), {} )
+		
+		return _merge( _cloneDeep( blueprint ), appliedStates, overrides )
+	}
 }
