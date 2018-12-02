@@ -1,10 +1,11 @@
 {
     "name": "@isthatcentered/charlies-factory",
-    "version": "0.3.0",
+    "version": "0.3.1",
     "description": "Making making objects easy",
     "main": "dist/index.js",
     "scripts": {
         "build": "parcel build src/index.ts",
+        "deploy": "yarn build && npm publish",
         "test": "jest --watchAll"
     },
     "repository": {
