@@ -5,6 +5,7 @@
     "main": "dist/index.js",
     "scripts": {
         "build": "parcel build src/index.ts",
+        "postbuild": "tsc --declaration --emitDeclarationOnly",
         "deploy": "yarn build && npm publish",
         "test": "jest --watchAll"
     },
@@ -16,6 +17,7 @@
         "factory",
         "object"
     ],
+    "types": "./dist/index.d.ts",
     "author": "Edouard Penin <e.peninb@gmail.com>",
     "license": "ISC",
     "bugs": {
