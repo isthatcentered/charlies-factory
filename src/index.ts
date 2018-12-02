@@ -14,9 +14,11 @@ export function factory<T>( blueprint: T, states: statesPatches = {} ): ( overri
 {
 	return ( overrides, ...stateNames ) => {
 		
+		const _states = _cloneDeep( states )
+		
 		const appliedStates = stateNames
-			.map( name => states[ name ] )
-			.reduce( ( state, currState ) => ({ ...state, ...currState }), {} )
+			.map( name => _states[ name ] )
+			.reduce( ( state, currState ) => _merge( state, currState ), {} )
 		
 		return _merge( _cloneDeep( blueprint ), appliedStates, overrides )
 	}

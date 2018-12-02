@@ -89,7 +89,7 @@ describe( `factory()`, () => {
 		beforeEach( () => {
 			STATEONE = {
 				name:    "stateOne",
-				address: { street: "stateOne" },
+				address: { street: "stateOne", city: "stateOne" },
 			}
 			
 			STATETWO = {
@@ -99,7 +99,7 @@ describe( `factory()`, () => {
 			MAKEBLUEPRINT = factory( BLUEPRINT, { stateOne: STATEONE, stateTwo: STATETWO } )
 		} )
 		
-		test( `Each step is applied on top of the other in call order`, () => {
+		test( `Each step is deeply merged on top of the other in call order`, () => {
 			expect( MAKEBLUEPRINT( null, "stateOne", "stateTwo" ) ).toEqual( {
 				...BLUEPRINT,
 				...STATEONE,
