@@ -125,6 +125,7 @@ describe( `factory()`, () => {
 			factory.generator = _GENERATOR
 		} )
 		
+		
 		test( `Generates data`, () => {
 			let seed      = ( generator: any ) => ({ name: generator.thing() }),
 			    makeThing = factory( seed )
@@ -136,8 +137,26 @@ describe( `factory()`, () => {
 			let seed      = ( generator: any ) => ({ name: generator.thing() }),
 			    makeThing = factory( { name: "name" }, { "state1": seed } )
 			
-			
 			expect( makeThing( {}, "state1" ).name ).toBe( "generated" )
+		} )
+		
+		test( `Generates different data everytime for states`, () => {
+			fail( "todo" )
+			// ;(factory.generator as any).thing.mockReturnValueOnce( "generated" )
+			// let seed      = ( generator: any ) => ({ name: generator.thing() }),
+			//     makeThing = factory( { name: "name" }, { "state1": seed } )
+			//
+			// expect( makeThing( {}, "state1" ).name ).toBe( "generated" )
+			// ;(factory.generator as any).thing.mockReturnValueOnce( "generated2" )
+			// expect( makeThing( {}, "state1" ).name ).toBe( "generated2" )
+		} )
+		
+		test( `Generated data for overrides`, () => {
+			let seed      = ( generator: any ) => ({ name: generator.thing() }),
+			    makeThing = factory( { name: "name" } )
+			
+			
+			expect( makeThing( seed ).name ).toBe( "generated" )
 		} )
 		
 		// allow generated data for states

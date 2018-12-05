@@ -15,10 +15,10 @@ type userDynamicSeed<T> = ( generator: any ) => T
 
 type userSeed<T> = T | userDynamicSeed<T>
 
-type thingMaker<T> = ( overrides?: DeepPartial<T>, ...statesToApply: string[] ) => T
+type thingMaker<T> = ( overrides?: userSeed<DeepPartial<T>>, ...statesToApply: string[] ) => T
 
 
-class Seed<T> implements Seed<T>
+class Seed<T>
 {
 	
 	private constructor( private _value: userSeed<T> )
@@ -26,7 +26,7 @@ class Seed<T> implements Seed<T>
 	}
 	
 	
-	merge( seed: Seed<T> )
+	merge( seed: Seed<T | DeepPartial<T>> )
 	{
 		return Seed.from( _merge( this.value, seed.value ) )
 	}
@@ -35,9 +35,12 @@ class Seed<T> implements Seed<T>
 	get value()
 	{
 		return typeof this._value !== "function" ?
-		       this._value :
+		       _cloneDeep( this._value ) :
 		       (this._value as userDynamicSeed<T>)( factory.generator )
 	}
+	
+	
+	static NullSeed = Seed.from( {} )
 	
 	
 	static from<T>( userSeed: userSeed<T> ): Seed<T>
@@ -49,19 +52,18 @@ class Seed<T> implements Seed<T>
 
 export function factory<T>( blueprint: userSeed<T>, states: statesPatches<T> = {} ): thingMaker<T>
 {
-	return ( overrides = {}, ...stateNames ) => {
+	return ( overrides = {}, ...namesOfStatesToApply ) => {
 		
-		const _states = _cloneDeep( states )
+		const _mergedStates = namesOfStatesToApply
+			.map( name => states[ name ] )
+			.map( state => Seed.from( state ) )
+			.reduce( ( seed, currSeed ) => seed.merge( currSeed ), Seed.NullSeed )
 		
-		const appliedStates = stateNames
-			.map( name => Seed.from( _states[ name ] ) )
-			.reduce( ( seed, currSeed ) => seed.merge( currSeed ), Seed.from( {} ) )
+		return Seed
+			.from( blueprint )
+			.merge( _mergedStates )
+			.merge( Seed.from( overrides ) )
 			.value
-		
-		if ( typeof blueprint !== "function" )
-			return _merge( _cloneDeep( blueprint ), appliedStates, overrides )
-		else
-			return _merge( (blueprint as userDynamicSeed<T>)( factory.generator ), appliedStates, overrides )
 	}
 }
 
