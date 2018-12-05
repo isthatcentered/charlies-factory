@@ -25,7 +25,6 @@ describe( `factory()`, () => {
 	
 	describe( `Blueprint can be overriden on make/call`, () => {
 		let OVERRIDES: any
-		
 		beforeEach( () => {
 			OVERRIDES = { address: { street: "overriden" } }
 		} )
@@ -44,7 +43,6 @@ describe( `factory()`, () => {
 	
 	describe( `Triggering a state`, () => {
 		let STATE: any
-		
 		beforeEach( () => {
 			STATE = {
 				name:    "state",
@@ -111,5 +109,38 @@ describe( `factory()`, () => {
 				},
 			} )
 		} )
+	} )
+	
+	describe( `Generating data`, () => {
+		let _GENERATOR: any
+		beforeEach( () => {
+			_GENERATOR = factory.generator
+			
+			factory.generator = { thing: jest.fn() } as any
+			
+			;(factory.generator as any).thing.mockReturnValue( "generated" )
+		} )
+		
+		afterEach( () => {
+			factory.generator = _GENERATOR
+		} )
+		
+		test( `Generates data`, () => {
+			let seed      = ( generator: any ) => ({ name: generator.thing() }),
+			    makeThing = factory( seed )
+			
+			expect( makeThing().name ).toBe( "generated" )
+		} )
+		
+		test( `Generated data for states`, () => {
+			let seed      = ( generator: any ) => ({ name: generator.thing() }),
+			    makeThing = factory( { name: "name" }, { "state1": seed } )
+			
+			
+			expect( makeThing( {}, "state1" ).name ).toBe( "generated" )
+		} )
+		
+		// allow generated data for states
+		// overrides ? -> does not matter
 	} )
 } )
