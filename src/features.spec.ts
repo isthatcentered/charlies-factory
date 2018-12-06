@@ -113,39 +113,35 @@ describe( `factory()`, () => {
 	} )
 	
 	describe( `Generating data`, () => {
-		let _GENERATOR: any
+		let _GENERATOR: any = Seed.generator,
+		    SEED: ( generator: any ) => { name: any }
+		
 		beforeEach( () => {
-			_GENERATOR = Seed.generator
+			SEED = ( generator: any ) => ({ name: generator.generateSomething() })
 			
-			Seed.generator = { thing: jest.fn() } as any
-			
-			;(Seed.generator as any).thing.mockReturnValue( "generated" )
+			Seed.generator = { generateSomething: jest.fn( () => "generated" ) } as any
 		} )
 		
-		afterEach( () => {
-			Seed.generator = _GENERATOR
-		} )
+		afterEach( () => Seed.generator = _GENERATOR )
 		
 		test( `Generates data for blueprint`, () => {
-			let seed      = ( generator: any ) => ({ name: generator.thing() }),
-			    makeThing = factory( seed )
+			const makeThing = factory( SEED )
 			
 			expect( makeThing().name ).toBe( "generated" )
 		} )
 		
 		test( `Generates data for states`, () => {
-			let seed      = ( generator: any ) => ({ name: generator.thing() }),
-			    makeThing = factory( { name: "name" }, { "state1": seed } )
+			const makeThing = factory( { name: "name" }, { "state1": SEED } )
 			
 			expect( makeThing( {}, "state1" ).name ).toBe( "generated" )
 		} )
 		
 		test( `Generates data for overrides`, () => {
-			let seed      = ( generator: any ) => ({ name: generator.thing() }),
-			    makeThing = factory( { name: "name" } )
+			const makeThing = factory( { name: "name" } )
 			
-			expect( makeThing( seed ).name ).toBe( "generated" )
+			expect( makeThing( SEED ).name ).toBe( "generated" )
 		} )
+		
 	} )
 } )
 
