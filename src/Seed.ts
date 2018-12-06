@@ -19,8 +19,7 @@ export class Seed<T>
 	}
 	
 	
-	merge( seed: Seed<T | DeepPartial<T>> )
-	{
+	merge( seed: Seed<T | DeepPartial<T>> ) {
 		return Seed.from( _merge( this.value, seed.value ) )
 	}
 	

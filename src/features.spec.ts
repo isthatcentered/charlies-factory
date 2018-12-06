@@ -1,5 +1,5 @@
-import { factory } from "./index"
 import { Seed } from "./Seed"
+import { factory } from "./index"
 
 
 
