@@ -1,59 +1,22 @@
-import _cloneDeep = require("lodash.clonedeep")
-import _merge = require("lodash.merge")
-
 // Thanks https://github.com/Microsoft/TypeScript/issues/11233#issuecomment-333255187
-type DeepPartial<T> = {
+import { Seed, userSeed } from "./Seed"
+
+
+
+
+export type DeepPartial<T> = {
 	[P in keyof T]?: DeepPartial<T[P]>;
 };
 
 interface statesPatches<T>
 {
-	[ stateName: string ]: primitiveSeed<T>
+	[ stateName: string ]: userSeed<T>
 }
 
-type userDynamicSeed<T> = ( generator: any ) => T
-
-type primitiveSeed<T> = T | userDynamicSeed<T>
-
-type thingMaker<T> = ( overrides?: primitiveSeed<DeepPartial<T>>, ...statesToApply: string[] ) => T
+type thingMaker<T> = ( overrides?: userSeed<DeepPartial<T>>, ...statesToApply: string[] ) => T
 
 
-export class Seed<T>
-{
-	
-	private constructor( private _value: primitiveSeed<T> )
-	{
-	}
-	
-	
-	merge( seed: Seed<T | DeepPartial<T>> )
-	{
-		return Seed.from( _merge( this.value, seed.value ) )
-	}
-	
-	
-	get value()
-	{
-		return typeof this._value !== "function" ?
-		       _cloneDeep( this._value ) :
-		       (this._value as userDynamicSeed<T>)( Seed.generator )
-	}
-	
-	
-	static NullSeed = Seed.from( {} )
-	
-	
-	static generator = {}
-	
-	
-	static from<T>( userSeed: primitiveSeed<T> ): Seed<T>
-	{
-		return new Seed<T>( userSeed )
-	}
-}
-
-
-export function factory<T>( blueprint: primitiveSeed<T>, states: statesPatches<T> = {} ): thingMaker<T>
+export function factory<T>( blueprint: userSeed<T>, states: statesPatches<T> = {} ): thingMaker<T>
 {
 	return ( overrides = {}, ...namesOfStatesToApply ) => {
 		

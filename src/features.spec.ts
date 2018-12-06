@@ -1,4 +1,5 @@
-import { factory, Seed } from "./index"
+import { factory } from "./index"
+import { Seed } from "./Seed"
 
 
 
@@ -125,30 +126,18 @@ describe( `factory()`, () => {
 			Seed.generator = _GENERATOR
 		} )
 		
-		
-		test( `Generates data`, () => {
+		test( `Generates data for blueprint`, () => {
 			let seed      = ( generator: any ) => ({ name: generator.thing() }),
 			    makeThing = factory( seed )
 			
 			expect( makeThing().name ).toBe( "generated" )
 		} )
 		
-		test( `Generated data for states`, () => {
+		test( `Generates data for states`, () => {
 			let seed      = ( generator: any ) => ({ name: generator.thing() }),
 			    makeThing = factory( { name: "name" }, { "state1": seed } )
 			
 			expect( makeThing( {}, "state1" ).name ).toBe( "generated" )
-		} )
-		
-		test( `Generates different data everytime for states`, () => {
-			let seed      = ( generator: any ) => ({ name: generator.thing() }),
-			    makeThing = factory( { name: "name" }, { "state1": seed } )
-			
-			makeThing( {}, "state1" )
-			
-			makeThing( {}, "state1" )
-			
-			expect( (Seed.generator as any).thing ).toHaveBeenCalledTimes( 2 )
 		} )
 		
 		test( `Generates data for overrides`, () => {
@@ -161,59 +150,3 @@ describe( `factory()`, () => {
 } )
 
 
-describe( `Seed`, () => {
-	describe( `.value`, () => {
-		test( `Returns a deep copy of the original object`, () => {
-			const blueprint = { name: "name" },
-			      seed      = Seed.from( blueprint )
-			
-			expect( seed.value ).not.toBe( blueprint )
-			expect( seed.value ).toEqual( blueprint )
-		} )
-	} )
-	
-	describe( `merge()`, () => {
-		test( `Passed seed is deeply merged on top of the source one`, () => {
-			const originalSeedValue = { name: "name", address: { street: "street", city: "city" } },
-			      mergedInSeedValue = { name: "overriden", address: { city: "overriden" } },
-			      originalSeed      = Seed.from( originalSeedValue ),
-			      mergedInSeed      = Seed.from( mergedInSeedValue )
-			
-			expect( originalSeed.merge( mergedInSeed ).value )
-				.toEqual( {
-					...originalSeedValue,
-					...mergedInSeedValue,
-					address: {
-						...originalSeedValue.address,
-						...mergedInSeedValue.address,
-					},
-				} )
-		} )
-	} )
-	
-	describe( `Dynamic seed`, () => {
-		let _GENERATOR = Seed.generator
-		
-		beforeEach( () => Seed.generator = { name: jest.fn( () => "batman" ) } )
-		
-		afterEach( () => Seed.generator = _GENERATOR )
-		
-		test( `.value returns an object with the generated data`, () => {
-			const blueprint = ( g: any ) => ({ name: g.name() }),
-			      seed      = Seed.from( blueprint )
-			
-			expect( seed.value ).toEqual( { name: "batman" } )
-		} )
-		
-		test( `Generates new data every time .value is called`, () => {
-			const blueprint = ( g: any ) => ({ name: g.name() }),
-			      seed      = Seed.from( blueprint )
-			
-			seed.value
-			
-			seed.value
-			
-			expect( (Seed.generator as any).name ).toHaveBeenCalledTimes( 2 )
-		} )
-	} )
-} )
