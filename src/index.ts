@@ -36,11 +36,14 @@ export class Seed<T>
 	{
 		return typeof this._value !== "function" ?
 		       _cloneDeep( this._value ) :
-		       (this._value as userDynamicSeed<T>)( factory.generator )
+		       (this._value as userDynamicSeed<T>)( Seed.generator )
 	}
 	
 	
 	static NullSeed = Seed.from( {} )
+	
+	
+	static generator = {}
 	
 	
 	static from<T>( userSeed: primitiveSeed<T> ): Seed<T>
@@ -64,9 +67,4 @@ export function factory<T>( blueprint: primitiveSeed<T>, states: statesPatches<T
 			.merge( Seed.from( overrides ) )
 			.value
 	}
-}
-
-
-factory.generator = {
-	name: () => "some name",
 }

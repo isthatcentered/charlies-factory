@@ -114,15 +114,15 @@ describe( `factory()`, () => {
 	describe( `Generating data`, () => {
 		let _GENERATOR: any
 		beforeEach( () => {
-			_GENERATOR = factory.generator
+			_GENERATOR = Seed.generator
 			
-			factory.generator = { thing: jest.fn() } as any
+			Seed.generator = { thing: jest.fn() } as any
 			
-			;(factory.generator as any).thing.mockReturnValue( "generated" )
+			;(Seed.generator as any).thing.mockReturnValue( "generated" )
 		} )
 		
 		afterEach( () => {
-			factory.generator = _GENERATOR
+			Seed.generator = _GENERATOR
 		} )
 		
 		
@@ -148,7 +148,7 @@ describe( `factory()`, () => {
 			
 			makeThing( {}, "state1" )
 			
-			expect( (factory.generator as any).thing ).toHaveBeenCalledTimes( 2 )
+			expect( (Seed.generator as any).thing ).toHaveBeenCalledTimes( 2 )
 		} )
 		
 		test( `Generates data for overrides`, () => {
@@ -191,12 +191,29 @@ describe( `Seed`, () => {
 		} )
 	} )
 	
-	// describe( `Dynamic seed`, () => {
-	// 	test( `Generating data`, () => {
-	// 		const seed      = ( g: any ) => ({ name: g.name() }),
-	// 		      generator = { name: () => "batman" }
-	//
-	// 		expect( Seed.from( seed, generator ).value ).toEqual( { name: "batman" } )
-	// 	} )
-	// } )
+	describe( `Dynamic seed`, () => {
+		let _GENERATOR = Seed.generator
+		
+		beforeEach( () => Seed.generator = { name: jest.fn( () => "batman" ) } )
+		
+		afterEach( () => Seed.generator = _GENERATOR )
+		
+		test( `.value returns an object with the generated data`, () => {
+			const blueprint = ( g: any ) => ({ name: g.name() }),
+			      seed      = Seed.from( blueprint )
+			
+			expect( seed.value ).toEqual( { name: "batman" } )
+		} )
+		
+		test( `Generates new data every time .value is called`, () => {
+			const blueprint = ( g: any ) => ({ name: g.name() }),
+			      seed      = Seed.from( blueprint )
+			
+			seed.value
+			
+			seed.value
+			
+			expect( (Seed.generator as any).name ).toHaveBeenCalledTimes( 2 )
+		} )
+	} )
 } )
