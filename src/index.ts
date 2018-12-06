@@ -18,7 +18,7 @@ type primitiveSeed<T> = T | userDynamicSeed<T>
 type thingMaker<T> = ( overrides?: primitiveSeed<DeepPartial<T>>, ...statesToApply: string[] ) => T
 
 
-class Seed<T>
+export class Seed<T>
 {
 	
 	private constructor( private _value: primitiveSeed<T> )
