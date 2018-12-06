@@ -8,20 +8,20 @@ type DeepPartial<T> = {
 
 interface statesPatches<T>
 {
-	[ stateName: string ]: userSeed<T>
+	[ stateName: string ]: primitiveSeed<T>
 }
 
 type userDynamicSeed<T> = ( generator: any ) => T
 
-type userSeed<T> = T | userDynamicSeed<T>
+type primitiveSeed<T> = T | userDynamicSeed<T>
 
-type thingMaker<T> = ( overrides?: userSeed<DeepPartial<T>>, ...statesToApply: string[] ) => T
+type thingMaker<T> = ( overrides?: primitiveSeed<DeepPartial<T>>, ...statesToApply: string[] ) => T
 
 
 class Seed<T>
 {
 	
-	private constructor( private _value: userSeed<T> )
+	private constructor( private _value: primitiveSeed<T> )
 	{
 	}
 	
@@ -43,20 +43,19 @@ class Seed<T>
 	static NullSeed = Seed.from( {} )
 	
 	
-	static from<T>( userSeed: userSeed<T> ): Seed<T>
+	static from<T>( userSeed: primitiveSeed<T> ): Seed<T>
 	{
 		return new Seed<T>( userSeed )
 	}
 }
 
 
-export function factory<T>( blueprint: userSeed<T>, states: statesPatches<T> = {} ): thingMaker<T>
+export function factory<T>( blueprint: primitiveSeed<T>, states: statesPatches<T> = {} ): thingMaker<T>
 {
 	return ( overrides = {}, ...namesOfStatesToApply ) => {
 		
 		const _mergedStates = namesOfStatesToApply
-			.map( name => states[ name ] )
-			.map( state => Seed.from( state ) )
+			.map( stateName => Seed.from( states[ stateName ] ) )
 			.reduce( ( seed, currSeed ) => seed.merge( currSeed ), Seed.NullSeed )
 		
 		return Seed
