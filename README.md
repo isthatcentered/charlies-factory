@@ -2,7 +2,7 @@
 Only show the data that matters in your fixtures.
 
 ```typescript
-// Before: What data do you think matters ? 🤯
+// Before: What data do you think matters about this card ? 😬
 const card = {
     title:    "Batman rocks",
     comments: [],
@@ -12,7 +12,7 @@ const card = {
     }
 } 
 
-// After: It's obvious, it's about the empty comments 🤗
+// After: It's obvious, it's about the empty comments 😊
 import {factory} from "@isthatcentered/charlies-factory"
 
 const makeCardResource = factory({
