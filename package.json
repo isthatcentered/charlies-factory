@@ -34,5 +34,9 @@
         "parcel-bundler": "^1.10.3",
         "ts-jest": "^23.10.4",
         "typescript": "^3.1.6"
+    },
+    "dependencies": {
+        "@types/faker": "^4.1.4",
+        "faker": "^4.1.0"
     }
 }

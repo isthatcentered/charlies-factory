@@ -1,7 +1,7 @@
 import _cloneDeep = require("lodash.clonedeep")
 import _merge = require("lodash.merge")
 import { DeepPartial } from "./index"
-
+import * as faker from "faker"
 
 
 
@@ -35,7 +35,7 @@ export class Seed<T>
 	static NullSeed = Seed.from( {} )
 	
 	
-	static generator = {}
+	static generator = faker
 	
 	
 	static from<T>( userSeed: userSeed<T> ): Seed<T>
