@@ -111,14 +111,17 @@ console.log(makeThing()) // {status: "disabled", email: "newEmail.com", ... }
 
 The seed as function also work for the overrides and the states.
 
+**For overrides**
 ```typescript
-// For overrides
-const makeThing = factory({id: 0}),
-	overrides = generator => ({id: generator.random.number()})
+const makeThing = factory({id: 0})
+
+const overrides = generator => ({id: generator.random.number()})
 
 console.log(makeThing(overrides)) // {id: 45 } (or whatever number has been generated) 
+```
 
-// For states
+**For states**
+```typescript
 const states = {
 	"discounted": generator => ({
 		discount: generator.random.number()
@@ -130,10 +133,13 @@ const states = {
 const makeThing = factory({stockCount: 1, discount: 0}, states)
 
 console.log(makeThing({}, "discounted", "inStock")) // {discount: 20, stockCount: 42} 
+```
 
-// Dynamic data extravaganza
+**Dynamic data extravaganza**
+```typescript 
 // Erh... @todo, sorry. But you get the idea, your factory can have a function as default, for a or every state you define, and for your last minute overrides if you want.
 ```
+
 
 (Actually there's not much more to say about the generator. We pass you the amazing [Faker](https://www.npmjs.com/package/faker) package. Enjoy 😀)
 
