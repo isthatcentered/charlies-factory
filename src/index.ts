@@ -7,16 +7,23 @@ export function factory<T>( blueprint: userSeed<T>, states: statesMap<T> = {} ):
 {
 	return ( overrides = {}, ...statesToApply: string[] ) => {
 		
-		const appliedStatesSeed = statesToApply
-			.map( stateName => Seed.from( states[ stateName ] ) )
-			.reduce( ( seed, currSeed ) => seed.merge( currSeed ), Seed.NullSeed )
+		const appliedStates = mapStateNamesToSeeds( statesToApply, states )
 		
 		return Seed
 			.from( blueprint )
-			.merge( appliedStatesSeed )
+			.merge( appliedStates )
 			.merge( Seed.from( overrides ) )
 			.value
 	}
+}
+
+
+function mapStateNamesToSeeds<T>( statesToApply: string[], states: statesMap<T> )
+{
+	return statesToApply
+		.map( stateName => Seed.from( states[ stateName ] ) )
+		.reduce( ( seed, currSeed ) => seed.merge( currSeed ), Seed.NullSeed )
+	
 }
 
 
