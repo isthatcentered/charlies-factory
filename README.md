@@ -141,4 +141,15 @@ console.log(makeThing({}, "discounted", "inStock")) // {discount: 20, stockCount
 ### States
 You can define default states for the generated objects like `active`, `done` or whatever you fancy.
 
-I haven't had time to add docs for this yet but you can checkout the example right above or the `src/features.spec.ts` for the how to use. 
+I haven't had time to add docs for this yet but you can checkout the example right above or the `src/features.spec.ts` for the how to use.
+
+
+## Give feedback
+### You're enjoying the package ? 
+Let me know at [e.peninb@gmail.com](e.peninb@gmail.com) or 🌟the repo 😀.
+
+### Found a bug ?
+Awesome, let me know by [opening an issue](https://github.com/isthatcentered/charlies-factory/issues) 👍
+
+### Need a new feature ?
+Nice, [open an issue](https://github.com/isthatcentered/charlies-factory/issues) and let's talk about this ! 👩‍🚀
