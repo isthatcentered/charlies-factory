@@ -1,7 +1,7 @@
 {
     "name": "@isthatcentered/charlies-factory",
-    "version": "0.5.0",
-    "description": "Making making objects easy",
+    "version": "1.0.0",
+    "description": "Makes making objects easy",
     "main": "dist/index.js",
     "scripts": {
         "build": "parcel build src/index.ts --target=node",
@@ -15,7 +15,20 @@
     },
     "keywords": [
         "factory",
-        "object"
+        "factory_girl",
+        "factory_bot",
+        "factory-bot",
+        "typescript",
+        "faker",
+        "generator",
+        "fixtures",
+        "test data",
+        "make",
+        "defaults",
+        "automatic",
+        "jest",
+        "mocha",
+        "karma"
     ],
     "types": "./dist/index.d.ts",
     "author": "Edouard Penin <e.peninb@gmail.com>",
