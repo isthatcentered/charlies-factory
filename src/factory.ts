@@ -1,26 +1,19 @@
-import { Seed, userSeed } from "./Seed"
+import { Seed } from "./Seed"
 import FakerStatic = Faker.FakerStatic
 
 
 
 
-/**
- *
- * @param {T} blueprint The default object you want the factory to return
- * @param {{[p: string]: ((generator: Faker.FakerStatic) => T) | T}} states
- * @return {thingMaker<T>}
- */
-export function factory<T>( blueprint: T, states?: { [ name: string ]: T | (( generator: FakerStatic ) => T) } ): thingMaker<T>
+export type dynamicSeed<T> = ( generator: FakerStatic ) => T
+export type seed<T> = T | (( generator: FakerStatic ) => T)
+export type partialSeed<T> = seed<DeepPartial<T>>
+export type DeepPartial<T> = {[P in keyof T]?: DeepPartial<T[P]>}
 
-/**
- *
- * @param {(generator: Faker.FakerStatic) => T} blueprint A function that returns the default object you want the factory to return
- * @param {{[p: string]: ((generator: Faker.FakerStatic) => T) | T}} states
- * @return {thingMaker<T>}
- */
-export function factory<T>( blueprint: ( generator: FakerStatic ) => T, states?: { [ name: string ]: T | (( generator: FakerStatic ) => T) } ): thingMaker<T>
 
-export function factory<T>( blueprint: T | (( generator: FakerStatic ) => T), states: { [ name: string ]: DeepPartial<T> | (( generator: FakerStatic ) => DeepPartial<T>) } = {} ): thingMaker<T>
+export function factory<T>(
+	blueprint: seed<T>,
+	states: { [ name: string ]: partialSeed<T> } = {},
+): ( overrides?: partialSeed<T>, ...statesToApply: string[] ) => T
 {
 	return ( overrides = {}, ...statesToApply: string[] ) => {
 		
@@ -35,28 +28,10 @@ export function factory<T>( blueprint: T | (( generator: FakerStatic ) => T), st
 }
 
 
-export function pack<T>( quantity: number, thing: thingMaker<T> ): Array<T>
-{
-	return Array.from( { length: quantity }, () => thing() )
-}
 
-
-function mapStateNamesToSeeds<T>( statesToApply: string[], states: statesMap<T> )
+function mapStateNamesToSeeds<T>( statesToApply: string[], states: { [ name: string ]: partialSeed<T> } )
 {
 	return statesToApply
 		.map( stateName => Seed.from( states[ stateName ] ) )
 		.reduce( ( seed, currSeed ) => seed.merge( currSeed ), Seed.NullSeed )
-	
 }
-
-
-export type DeepPartial<T> = {
-	[P in keyof T]?: DeepPartial<T[P]>;
-};
-
-export interface statesMap<T>
-{
-	[ stateName: string ]: userSeed<T>
-}
-
-type thingMaker<T> = ( overrides?: userSeed<DeepPartial<T>>, ...statesToApply: string[] ) => T
