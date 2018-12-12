@@ -1,9 +1,26 @@
 import { Seed, userSeed } from "./Seed"
+import FakerStatic = Faker.FakerStatic
 
 
 
 
-export function factory<T>( blueprint: userSeed<T>, states: statesMap<T> = {} ): thingMaker<T>
+/**
+ *
+ * @param {T} blueprint The default object you want the factory to return
+ * @param {{[p: string]: ((generator: Faker.FakerStatic) => T) | T}} states
+ * @return {thingMaker<T>}
+ */
+export function factory<T>( blueprint: T, states?: { [ name: string ]: T | (( generator: FakerStatic ) => T) } ): thingMaker<T>
+
+/**
+ *
+ * @param {(generator: Faker.FakerStatic) => T} blueprint A function that returns the default object you want the factory to return
+ * @param {{[p: string]: ((generator: Faker.FakerStatic) => T) | T}} states
+ * @return {thingMaker<T>}
+ */
+export function factory<T>( blueprint: ( generator: FakerStatic ) => T, states?: { [ name: string ]: T | (( generator: FakerStatic ) => T) } ): thingMaker<T>
+
+export function factory<T>( blueprint: T | (( generator: FakerStatic ) => T), states: { [ name: string ]: DeepPartial<T> | (( generator: FakerStatic ) => DeepPartial<T>) } = {} ): thingMaker<T>
 {
 	return ( overrides = {}, ...statesToApply: string[] ) => {
 		
