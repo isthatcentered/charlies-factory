@@ -18,6 +18,12 @@ export function factory<T>( blueprint: userSeed<T>, states: statesMap<T> = {} ):
 }
 
 
+export function pack<T>( quantity: number, thing: thingMaker<T> ): Array<T>
+{
+	return Array.from( { length: quantity }, () => thing() )
+}
+
+
 function mapStateNamesToSeeds<T>( statesToApply: string[], states: statesMap<T> )
 {
 	return statesToApply
