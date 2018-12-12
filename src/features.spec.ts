@@ -1,6 +1,7 @@
-import { factory, pack } from "./index"
+import { pack } from "./factory"
 import * as Faker from "faker"
 import FakerStatic = Faker.FakerStatic
+import { factory } from "./factory"
 
 
 
@@ -164,8 +165,6 @@ describe( `factory()`, () => {
 	} )
 } )
 
-// @todo: clean up index file
-// @todo: make types explicot types
-// @todo: close issue with commit
+
 
 

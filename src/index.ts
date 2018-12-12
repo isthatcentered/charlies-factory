@@ -1,45 +1,6 @@
-import { Seed, userSeed } from "./Seed"
+import { factory, pack } from "./factory"
 
 
 
 
-export function factory<T>( blueprint: userSeed<T>, states: statesMap<T> = {} ): thingMaker<T>
-{
-	return ( overrides = {}, ...statesToApply: string[] ) => {
-		
-		const appliedStates = mapStateNamesToSeeds( statesToApply, states )
-		
-		return Seed
-			.from( blueprint )
-			.merge( appliedStates )
-			.merge( Seed.from( overrides ) )
-			.value
-	}
-}
-
-
-export function pack<T>( quantity: number, thing: thingMaker<T> ): Array<T>
-{
-	return Array.from( { length: quantity }, () => thing() )
-}
-
-
-function mapStateNamesToSeeds<T>( statesToApply: string[], states: statesMap<T> )
-{
-	return statesToApply
-		.map( stateName => Seed.from( states[ stateName ] ) )
-		.reduce( ( seed, currSeed ) => seed.merge( currSeed ), Seed.NullSeed )
-	
-}
-
-
-export type DeepPartial<T> = {
-	[P in keyof T]?: DeepPartial<T[P]>;
-};
-
-export interface statesMap<T>
-{
-	[ stateName: string ]: userSeed<T>
-}
-
-type thingMaker<T> = ( overrides?: userSeed<DeepPartial<T>>, ...statesToApply: string[] ) => T
+export { factory, pack }

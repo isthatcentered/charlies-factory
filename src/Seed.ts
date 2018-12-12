@@ -1,6 +1,6 @@
 import _cloneDeep = require("lodash.clonedeep")
 import _merge = require("lodash.merge")
-import { DeepPartial } from "./index"
+import { DeepPartial } from "./factory"
 import * as faker from "faker"
 
 
