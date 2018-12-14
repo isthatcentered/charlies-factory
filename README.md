@@ -21,6 +21,26 @@ const makeCardResource = factory({
 
 const card = makeCardResource( { comments: [] } )  
 ```
+
+## Table of content
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+
+- [Installation](#installation)
+- [How to use](#how-to-use)
+  - [Basic use](#basic-use)
+  - [Overriding default data](#overriding-default-data)
+  - [Dynamic data](#dynamic-data)
+  - [States](#states)
+  - [Generating multiple items at a time](#generating-multiple-items-at-a-time)
+- [Give feedback](#give-feedback)
+  - [You're enjoying the package ?](#youre-enjoying-the-package-)
+  - [Found a bug ?](#found-a-bug-)
+  - [Need a new feature ?](#need-a-new-feature-)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 ## Installation
 ```bash
 npm i @isthatcentered/charlies-factory 
