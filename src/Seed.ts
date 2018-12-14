@@ -1,25 +1,21 @@
 import _cloneDeep = require("lodash.clonedeep")
 import _merge = require("lodash.merge")
-import { DeepPartial } from "./factory"
+import { DeepPartial, dynamicSeed, seed } from "./factory"
 import * as faker from "faker"
 
 
 
-export type userDynamicSeed<T> = ( generator: any ) => T
-
-export type userSimpleSeed<T> = T
-
-export type userSeed<T> = userSimpleSeed<T> | userDynamicSeed<T>
 
 export class Seed<T>
 {
 	
-	private constructor( private _value: userSeed<T> )
+	private constructor( private _value: seed<T> )
 	{
 	}
 	
 	
-	merge( seed: Seed<T | DeepPartial<T>> ) {
+	merge( seed: Seed<T | DeepPartial<T>> )
+	{
 		return Seed.from( _merge( this.value, seed.value ) )
 	}
 	
@@ -28,7 +24,7 @@ export class Seed<T>
 	{
 		return typeof this._value !== "function" ?
 		       _cloneDeep( this._value ) :
-		       (this._value as userDynamicSeed<T>)( Seed.generator )
+		       (this._value as dynamicSeed<T>)( Seed.generator )
 	}
 	
 	
@@ -38,7 +34,7 @@ export class Seed<T>
 	static generator = faker
 	
 	
-	static from<T>( userSeed: userSeed<T> ): Seed<T>
+	static from<T>( userSeed: seed<T> ): Seed<T>
 	{
 		return new Seed<T>( userSeed )
 	}
