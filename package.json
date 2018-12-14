@@ -1,12 +1,12 @@
 {
   "name": "@isthatcentered/charlies-factory",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Makes making objects easy",
   "main": "dist/index.js",
   "scripts": {
     "build": "parcel build src/index.ts --target=node",
     "postbuild": "tsc --declaration --emitDeclarationOnly",
-    "deploy": "yarn build && npm publish",
+    "deploy": "yarn build && publish-please",
     "test": "jest --watchAll",
     "publish-please": "publish-please",
     "prepublishOnly": "publish-please guard"
