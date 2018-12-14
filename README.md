@@ -149,6 +149,18 @@ You can define default states for the generated objects like `active`, `done` or
 
 I haven't had time to add docs for this yet but you can checkout the example right above or the `src/features.spec.ts` for the how to use.
 
+### Generating multiple items at a time
+Sometimes, you need a bunch of objects. We got you covered with the `pack` function. Think you want a `pack` of things from the `factory`.
+
+Here's the how to
+```typescript
+const cards = pack(3, makeCard)
+
+// Or, If you need the overrides, (to have a unique ID for each card for example)
+const cards = pack(3, generator => makeCard({
+	id: generator.random.uuid()
+}))
+``` 
 
 ## Give feedback
 ### You're enjoying the package ? 
