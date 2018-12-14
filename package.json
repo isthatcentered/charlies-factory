@@ -1,55 +1,58 @@
 {
-    "name": "@isthatcentered/charlies-factory",
-    "version": "1.0.0",
-    "description": "Makes making objects easy",
-    "main": "dist/index.js",
-    "scripts": {
-        "build": "parcel build src/index.ts --target=node",
-        "postbuild": "tsc --declaration --emitDeclarationOnly",
-        "deploy": "yarn build && npm publish",
-        "test": "jest --watchAll"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/isthatcentered/charlies-factory.git"
-    },
-    "keywords": [
-        "factory",
-        "factory_girl",
-        "factory_bot",
-        "factory-bot",
-        "typescript",
-        "faker",
-        "generator",
-        "fixtures",
-        "test data",
-        "make",
-        "defaults",
-        "automatic",
-        "jest",
-        "mocha",
-        "karma"
-    ],
-    "types": "./dist/index.d.ts",
-    "author": "Edouard Penin <e.peninb@gmail.com>",
-    "license": "ISC",
-    "bugs": {
-        "url": "https://github.com/isthatcentered/charlies-factory/issues"
-    },
-    "homepage": "https://github.com/isthatcentered/charlies-factory#readme",
-    "devDependencies": {
-        "@types/jest": "^23.3.9",
-        "jest": "^23.6.0",
-        "parcel-bundler": "^1.10.3",
-        "ts-jest": "^23.10.4",
-        "typescript": "^3.1.6"
-    },
-    "dependencies": {
-        "@types/lodash.clonedeep": "^4.5.4",
-        "@types/lodash.merge": "^4.6.4",
-        "@types/faker": "^4.1.4",
-        "lodash.clonedeep": "^4.5.0",
-        "lodash.merge": "^4.6.1",
-        "faker": "^4.1.0"
-    }
+  "name": "@isthatcentered/charlies-factory",
+  "version": "1.0.0",
+  "description": "Makes making objects easy",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "parcel build src/index.ts --target=node",
+    "postbuild": "tsc --declaration --emitDeclarationOnly",
+    "deploy": "yarn build && npm publish",
+    "test": "jest --watchAll",
+    "publish-please": "publish-please",
+    "prepublishOnly": "publish-please guard"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/isthatcentered/charlies-factory.git"
+  },
+  "keywords": [
+    "factory",
+    "factory_girl",
+    "factory_bot",
+    "factory-bot",
+    "typescript",
+    "faker",
+    "generator",
+    "fixtures",
+    "test data",
+    "make",
+    "defaults",
+    "automatic",
+    "jest",
+    "mocha",
+    "karma"
+  ],
+  "types": "./dist/index.d.ts",
+  "author": "Edouard Penin <e.peninb@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/isthatcentered/charlies-factory/issues"
+  },
+  "homepage": "https://github.com/isthatcentered/charlies-factory#readme",
+  "devDependencies": {
+    "@types/jest": "^23.3.9",
+    "jest": "^23.6.0",
+    "parcel-bundler": "^1.10.3",
+    "publish-please": "^5.4.3",
+    "ts-jest": "^23.10.4",
+    "typescript": "^3.1.6"
+  },
+  "dependencies": {
+    "@types/faker": "^4.1.4",
+    "@types/lodash.clonedeep": "^4.5.4",
+    "@types/lodash.merge": "^4.6.4",
+    "faker": "^4.1.0",
+    "lodash.clonedeep": "^4.5.0",
+    "lodash.merge": "^4.6.1"
+  }
 }
