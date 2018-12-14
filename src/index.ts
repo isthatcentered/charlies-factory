@@ -1,4 +1,5 @@
-import { factory, pack } from "./factory"
+import { factory} from "./factory"
+import { pack } from "./pack"
 
 
 

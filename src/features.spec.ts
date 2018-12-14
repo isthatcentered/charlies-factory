@@ -1,4 +1,4 @@
-import { pack } from "./factory"
+import { pack } from "./pack"
 import * as Faker from "faker"
 import FakerStatic = Faker.FakerStatic
 import { factory } from "./factory"
