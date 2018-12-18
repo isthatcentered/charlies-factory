@@ -35,7 +35,7 @@
         "mocha",
         "karma"
     ],
-    "types": "./dist/index.d.ts",
+    "types": "dist/index.d.ts",
     "author": "Edouard Penin <e.peninb@gmail.com>",
     "license": "ISC",
     "bugs": {
