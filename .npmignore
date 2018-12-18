@@ -2,3 +2,4 @@ src
 .cache
 .idea
 yarn-error.log
+.rpt2_cache
