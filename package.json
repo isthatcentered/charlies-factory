@@ -1,12 +1,12 @@
 {
     "name": "@isthatcentered/charlies-factory",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "description": "Makes making objects easy",
     "main": "dist/index.js",
     "module": "dist/index.es.js",
     "scripts": {
         "dev": "rollup -cw",
-        "test": "jest --watchAll",
+        "test": "jest",
         "prebuild": "rm -rf ./dist && yarn readme",
         "build": "rollup -c",
         "readme": "yarn doctoc README.md",
