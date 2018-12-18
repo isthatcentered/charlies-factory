@@ -3,6 +3,7 @@
     "version": "1.2.0",
     "description": "Makes making objects easy",
     "main": "dist/index.js",
+    "module": "dist/index.es.js",
     "scripts": {
         "build": "parcel build src/index.ts --target=node",
         "postbuild": "tsc --declaration --emitDeclarationOnly",
@@ -10,7 +11,9 @@
         "deploy": "yarn build && yarn readme && publish-please",
         "test": "jest --watchAll",
         "publish-please": "publish-please",
-        "prepublishOnly": "publish-please guard"
+        "prepublishOnly": "publish-please guard",
+        "rollup:build": "rollup -c",
+        "rollup:watch": "rollup -cw"
     },
     "repository": {
         "type": "git",
@@ -46,8 +49,10 @@
         "jest": "^23.6.0",
         "parcel-bundler": "^1.10.3",
         "publish-please": "^5.4.3",
+        "rollup": "^0.68.0",
+        "rollup-plugin-typescript2": "^0.18.1",
         "ts-jest": "^23.10.4",
-        "typescript": "^3.1.6"
+        "typescript": "^3.2.2"
     },
     "dependencies": {
         "@types/faker": "^4.1.4",
