@@ -10,9 +10,9 @@
         "declarationDir": "./dist",
         "declaration": true,
         /* Generates corresponding '.d.ts' file. */
-        "declarationMap": true,
+        "declarationMap": false,
         /* Generates a sourcemap for each corresponding '.d.ts' file. */
-        "sourceMap": true,
+        "sourceMap": false,
         /* Generates corresponding '.map' file. */
         // "outFile": "./",                       /* Concatenate and emit output to single file. */
         "outDir": "./dist/",
