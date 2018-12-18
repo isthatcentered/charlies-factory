@@ -1,8 +1,8 @@
-import _cloneDeep = require("lodash.clonedeep")
-import _merge = require("lodash.merge")
-import FakerStatic = Faker.FakerStatic
+import _merge from "lodash.merge"
+import _cloneDeep from "lodash.clonedeep"
 import { DeepPartial, dynamicSeed, seed } from "./factory"
 import * as faker from "faker"
+import FakerStatic = Faker.FakerStatic
 
 
 

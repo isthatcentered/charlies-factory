@@ -5,15 +5,14 @@
     "main": "dist/index.js",
     "module": "dist/index.es.js",
     "scripts": {
-        "build": "parcel build src/index.ts --target=node",
-        "postbuild": "tsc --declaration --emitDeclarationOnly",
-        "readme": "yarn doctoc README.md",
-        "deploy": "yarn build && yarn readme && publish-please",
+        "dev": "rollup -cw",
         "test": "jest --watchAll",
+        "prebuild": "rm -rf ./dist && yarn readme",
+        "build": "rollup -c",
+        "readme": "yarn doctoc README.md",
+        "deploy": "yarn build && publish-please",
         "publish-please": "publish-please",
-        "prepublishOnly": "publish-please guard",
-        "rollup:build": "rollup -c",
-        "rollup:watch": "rollup -cw"
+        "prepublishOnly": "publish-please guard"
     },
     "repository": {
         "type": "git",
