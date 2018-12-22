@@ -19,7 +19,6 @@ describe( `Seed`, () => {
 		} )
 	} )
 	
-	
 	describe( `.value`, () => {
 		test( `Returns a deep copy of the original object`, () => {
 			const blueprint = { name: "name", address: { street: "street" } },

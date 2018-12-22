@@ -36,7 +36,7 @@ export class Seed<T>
 	
 	
 	
-	private static __id: seedId = 0
+	private static __id: seedId = 1
 	
 	static NullSeed = Seed.from( {} )
 	

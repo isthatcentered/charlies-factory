@@ -15,12 +15,13 @@ export function factory<T>(
 	states: { [ name: string ]: partialSeed<T> } = {},
 ): ( overrides?: partialSeed<T>, ...statesToApply: string[] ) => T
 {
+	let currId: seedId = 1
+	
 	return ( overrides = {}, ...statesToApply: string[] ) => {
-		
-		const appliedStates = mapStateNamesToSeeds( statesToApply, states )
+		const appliedStates: Seed<DeepPartial<T>> = mapStateNamesToSeeds( statesToApply, states )
 		
 		return Seed
-			.from( blueprint )
+			.from( blueprint, currId++ )
 			.merge( appliedStates )
 			.merge( Seed.from( overrides ) )
 			.value
