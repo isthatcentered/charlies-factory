@@ -110,12 +110,12 @@ You might not want that or might need to compute some data for the defaults.
 It's easy, you can actually pass a function as default. 
 
 ```typescript
-const seedFunction = (generator: FakerStatic) => { // Yes, we give you a data generator (Faker) because we're nice like that but more on that later 😇
+const seedFunction = (generator: FakerStatic, index: seedId) => { // Yes, we give you a data generator (Faker) because we're nice like that but more on that later 😇
 	
 	const someComputedStuff  = computeMeSomeStuffFromCurrentAppState(appState)
 	
 	return {
-		id: appState.things.length(),
+		id: index, // each factory you define starts it's own index sequence
 		status: someComputedStuff,
 		email: generator.internet.email()
 		// ... you get the ide
@@ -125,8 +125,8 @@ const seedFunction = (generator: FakerStatic) => { // Yes, we give you a data ge
 const makeThing = factory( seedFunction )
 
 // The function will be executed every time you call the factory 😙
-console.log(makeThing()) // {status: "active", email: "whatever.com", ... }
-console.log(makeThing()) // {status: "disabled", email: "newEmail.com", ... }   
+console.log(makeThing()) // {id: 1, status: "active", email: "whatever.com", ... }
+console.log(makeThing()) // {id: 2, status: "disabled", email: "newEmail.com", ... }   
 ```
 
 The seed as function also work for the overrides and the states.
@@ -135,7 +135,7 @@ The seed as function also work for the overrides and the states.
 ```typescript
 const makeThing = factory({id: 0})
 
-const overrides = generator => ({id: generator.random.number()})
+const overrides = (generator, index) => ({id: generator.random.number()})
 
 console.log(makeThing(overrides)) // {id: 45 } (or whatever number has been generated) 
 ```
@@ -143,10 +143,10 @@ console.log(makeThing(overrides)) // {id: 45 } (or whatever number has been gene
 **For states**
 ```typescript
 const states = {
-	"discounted": generator => ({
+	"discounted": (generator, index) => ({
 		discount: generator.random.number()
 	}),
-	"inStock": generator => ({
+	"inStock": (generator, index) => ({
         stockCount: generator.random.number() // (I'm not doing Faker justice, it can do way much more than generate random numbers)
     })
 }
@@ -160,8 +160,6 @@ console.log(makeThing({}, "discounted", "inStock")) // {discount: 20, stockCount
 // Erh... @todo, sorry. But you get the idea, your factory can have a function as default, for a or every state you define, and for your last minute overrides if you want.
 ```
 
-
-(Actually there's not much more to say about the generator. We pass you the amazing [Faker](https://www.npmjs.com/package/faker) package. Enjoy 😀)
 
 
 ### States
