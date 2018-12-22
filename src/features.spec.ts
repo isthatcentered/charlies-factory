@@ -149,6 +149,22 @@ describe( `factory()`, () => {
 		} )
 	} )
 	
+	describe( `ID`, () => {
+		let SEED: ( generator: FakerStatic, index: number ) => ({ id: number })
+		
+		beforeEach( () => {
+			SEED = ( faker, index ) => ({ id: index })
+		} )
+		
+		test( `Id is passed to generator function`, () => {
+			const makeThing = factory( SEED as any )
+			
+			expect( makeThing().id ).toBe( 0 )
+			expect( makeThing( () => ({}) ).id ).toBe( 1 )
+			expect( makeThing().id ).toBe( 2 )
+		} )
+	} )
+	
 	describe( `Making multiple objects at a time (packaging)`, () => {
 		beforeEach( () => {
 			BLUEPRINT = { name: "name" }
