@@ -1,11 +1,11 @@
-import { Seed } from "./Seed"
+import { Seed, seedId } from "./Seed"
 import FakerStatic = Faker.FakerStatic
 
 
 
 
-export type dynamicSeed<T> = ( generator: FakerStatic ) => T
-export type seed<T> = T | (( generator: FakerStatic ) => T)
+export type dynamicSeed<T> = ( generator: FakerStatic, id: seedId ) => T
+export type seed<T> = T | dynamicSeed<T>
 export type partialSeed<T> = seed<DeepPartial<T>>
 export type DeepPartial<T> = {[P in keyof T]?: DeepPartial<T[P]>}
 

@@ -6,6 +6,20 @@ import FakerStatic = Faker.FakerStatic
 
 
 describe( `Seed`, () => {
+	describe( `Each seed has an id`, () => {
+		test( `Each seed automatically get it's own id if not specified`, () => {
+			const firstSeed  = Seed.from( {} ),
+			      secondSeed = Seed.from( {} )
+			
+			expect( firstSeed.id ).not.toBe( secondSeed.id )
+		} )
+		
+		test( `Id can be chosen`, () => {
+			expect( Seed.from( {}, 111 ).id ).toBe( 111 )
+		} )
+	} )
+	
+	
 	describe( `.value`, () => {
 		test( `Returns a deep copy of the original object`, () => {
 			const blueprint = { name: "name", address: { street: "street" } },
@@ -35,6 +49,13 @@ describe( `Seed`, () => {
 					},
 				} )
 		} )
+		
+		test( `Merge keeps the original seed id`, () => {
+			const originalSeed = Seed.from( {}, 111 ),
+			      mergedInSeed = Seed.from( {}, 222 )
+			
+			expect( originalSeed.merge( mergedInSeed ).id ).toBe( 111 )
+		} )
 	} )
 	
 	describe( `Dynamic seed`, () => {
@@ -62,5 +83,14 @@ describe( `Seed`, () => {
 			
 			expect( Seed.generator.name.findName ).toHaveBeenCalledTimes( 2 )
 		} )
+		
+		test( `Seed's Id is passed to generator function`, () => {
+			const spy = jest.fn()
+			
+			Seed.from( spy, 111 ).value
+			
+			expect( spy ).toHaveBeenCalledWith( expect.anything(), 111 )
+		} )
+		
 	} )
 } )
