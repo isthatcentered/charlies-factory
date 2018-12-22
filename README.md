@@ -174,12 +174,8 @@ Sometimes, you need a bunch of objects. We got you covered with the `pack` funct
 
 Here's the how to
 ```typescript
-const cards = pack(3, makeCard)
-
-// Or, If you need the overrides, (to have a unique ID for each card for example)
-const cards = pack(3, generator => makeCard({
-	id: generator.random.uuid()
-}))
+// We provide the loop index in case you need some ID 👮‍
+const cards = pack(3, index => makeCard({id: index})) // Remember, you still have acces to overrides
 ``` 
 
 ## Give feedback

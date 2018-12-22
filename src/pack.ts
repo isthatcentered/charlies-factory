@@ -1,9 +1,4 @@
-import { partialSeed } from "./factory"
-
-
-
-
-export function pack<T>( quantity: number, thing: ( overrides?: partialSeed<T>, ...statesToApply: string[] ) => T ): Array<T>
+export function pack<T>( quantity: number, thing: ( index: number ) => T ): Array<T>
 {
-	return Array.from( { length: quantity }, () => thing() )
+	return Array.from( { length: quantity }, ( val, ind ) => thing( ind ) )
 }

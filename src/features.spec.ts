@@ -1,7 +1,7 @@
 import { pack } from "./pack"
 import * as Faker from "faker"
-import FakerStatic = Faker.FakerStatic
 import { factory } from "./factory"
+import FakerStatic = Faker.FakerStatic
 
 
 
@@ -156,11 +156,22 @@ describe( `factory()`, () => {
 		} )
 		
 		test( `Returns the desired number of objects`, () => {
-			const result: testBlueprint[] = pack( 3, MAKEBLUEPRINT )
+			const result: testBlueprint[] = pack( 3, _ => MAKEBLUEPRINT() )
 			expect( result ).toHaveLength( 3 )
 			expect( result[ 0 ].name ).toBe( "name" )
 			expect( result[ 1 ].name ).toBe( "name" )
 			expect( result[ 2 ].name ).toBe( "name" )
+		} )
+		
+		test( `Passes the iteration index to the function`, () => {
+			const spy = jest.fn()
+			
+			pack( 3, spy )
+			
+			expect( spy ).toHaveBeenCalledTimes( 3 )
+			expect( spy ).toHaveBeenNthCalledWith( 1, 0 )
+			expect( spy ).toHaveBeenNthCalledWith( 2, 1 )
+			expect( spy ).toHaveBeenNthCalledWith( 3, 2 )
 		} )
 	} )
 } )
