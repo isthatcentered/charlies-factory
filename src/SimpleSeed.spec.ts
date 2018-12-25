@@ -1,11 +1,12 @@
 import _cloneDeep from "lodash.clonedeep"
 import _merge from "lodash.merge"
 import { DeepPartial } from "./factory"
+import { ISeed } from "./DynamicSeed.spec"
 
 
 
 
-export class SimpleSeed<T extends object>
+export class SimpleSeed<T> implements ISeed<T>
 {
 	value: T
 	
@@ -16,7 +17,7 @@ export class SimpleSeed<T extends object>
 	}
 	
 	
-	merge( seed: SimpleSeed<DeepPartial<T>> )
+	merge( seed: ISeed<DeepPartial<T>> )
 	{
 		this.value = _merge( this.value, seed.value )
 		

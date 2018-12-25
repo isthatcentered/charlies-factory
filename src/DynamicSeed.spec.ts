@@ -7,7 +7,13 @@ import _merge from "lodash.merge"
 
 
 
-class DynamicSeed<T>
+export interface ISeed<T>
+{
+	value: T
+	merge: ( seed: ISeed<DeepPartial<T>> ) => ISeed<T>
+}
+
+class DynamicSeed<T> implements ISeed<T>
 {
 	private _merged: any[] = []
 	
@@ -29,7 +35,7 @@ class DynamicSeed<T>
 	}
 	
 	
-	merge( seed: DynamicSeed<any> )
+	merge( seed: ISeed<DeepPartial<T>> )
 	{
 		this._merged.push( seed )
 		
@@ -120,7 +126,7 @@ describe( `DynamicSeed`, () => {
 				const { seed }   = makeDynamicSeed( () => BLUEPRINT ),
 				      mergedSeed = new SimpleSeed( PARTIAL_BLUEPRINT_OVERRIDE )
 				
-				seed.merge( mergedSeed as any )
+				seed.merge( mergedSeed )
 				
 				expect( seed.value ).toEqual( <testobject>{
 					...BLUEPRINT,
@@ -153,7 +159,7 @@ describe( `DynamicSeed`, () => {
 				      { seed: seed2 } = makeDynamicSeed(),
 				      spy             = jest.spyOn( seed2, "value", "get" )
 				
-				seed1.merge( seed2 as any )
+				seed1.merge( seed2 )
 				
 				expect( spy ).not.toHaveBeenCalled()
 				
