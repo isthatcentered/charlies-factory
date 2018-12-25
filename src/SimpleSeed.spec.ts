@@ -5,7 +5,7 @@ import { DeepPartial } from "./factory"
 
 
 
-class SimpleSeed<T extends object>
+export class SimpleSeed<T extends object>
 {
 	value: T
 	
@@ -24,7 +24,7 @@ class SimpleSeed<T extends object>
 	}
 }
 
-interface testobject
+export interface testobject
 {
 	someKey: string,
 	nested: {

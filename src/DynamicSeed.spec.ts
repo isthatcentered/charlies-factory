@@ -1,12 +1,18 @@
 import FakerStatic = Faker.FakerStatic
 import * as Faker from "faker"
+import { DeepPartial } from "./factory"
+import { SimpleSeed, testobject } from "./SimpleSeed.spec"
+import _merge from "lodash.merge"
 
 
 
 
 class DynamicSeed<T>
 {
-	constructor( private blueprint: ( faker: FakerStatic, id: number ) => T, public id: number )
+	private _merged: any[] = []
+	
+	
+	constructor( private _blueprint: ( faker: FakerStatic, id: number ) => T, public id: number )
 	{
 	
 	}
@@ -14,13 +20,19 @@ class DynamicSeed<T>
 	
 	get value(): T
 	{
-		return this.blueprint( Faker, this.id )
-		
+		return this
+			._merged
+			.reduce(
+				( acc, seed ) => _merge( acc, seed.value ),
+				this._blueprint( Faker, this.id ),
+			)
 	}
 	
 	
-	merge( merged: DynamicSeed<any> )
+	merge( seed: DynamicSeed<any> )
 	{
+		this._merged.push( seed )
+		
 		return this
 	}
 }
@@ -84,19 +96,80 @@ describe( `DynamicSeed`, () => {
 			expect( orginal.id ).toBe( 1 )
 		} )
 		
-		describe( `Keeps dynamism of merged in seeds`, () => {
-			test( `Only calls other seed's value on .value`, () => {
+		describe( `Deeply merges new seed on top of original`, () => {
+			let BLUEPRINT: testobject,
+			    PARTIAL_BLUEPRINT_OVERRIDE: DeepPartial<testobject>
 			
+			beforeEach( () => {
+				BLUEPRINT = {
+					someKey: "someKey",
+					nested:  {
+						someNestedKey:      "semoeNestedKey",
+						someOtherNestedKey: "someOtherNestedKey",
+					},
+				}
+				PARTIAL_BLUEPRINT_OVERRIDE = {
+					someKey: "overriden",
+					nested:  {
+						someOtherNestedKey: "overriden",
+					},
+				}
 			} )
 			
-			test( `Deeply merges new seed on top of original`, () => {
+			test( `With a SimpleSeed`, () => {
+				const { seed }   = makeDynamicSeed( () => BLUEPRINT ),
+				      mergedSeed = new SimpleSeed( PARTIAL_BLUEPRINT_OVERRIDE )
+				
+				seed.merge( mergedSeed as any )
+				
+				expect( seed.value ).toEqual( <testobject>{
+					...BLUEPRINT,
+					...PARTIAL_BLUEPRINT_OVERRIDE,
+					nested: {
+						...BLUEPRINT.nested,
+						...PARTIAL_BLUEPRINT_OVERRIDE.nested,
+					},
+				} )
+			} )
 			
+			test( `With a DynamicSeed`, () => {
+				const { seed }             = makeDynamicSeed( () => BLUEPRINT ),
+				      { seed: mergedSeed } = makeDynamicSeed( () => PARTIAL_BLUEPRINT_OVERRIDE )
+				
+				seed.merge( mergedSeed )
+				
+				expect( seed.value ).toEqual( <testobject>{
+					...BLUEPRINT,
+					...PARTIAL_BLUEPRINT_OVERRIDE,
+					nested: {
+						...BLUEPRINT.nested,
+						...PARTIAL_BLUEPRINT_OVERRIDE.nested,
+					},
+				} )
+			} )
+			
+			test( `Keeps dynamisms of merged in seed by only calling .value when asked for it's own value`, () => {
+				const { seed: seed1 } = makeDynamicSeed(),
+				      { seed: seed2 } = makeDynamicSeed(),
+				      spy             = jest.spyOn( seed2, "value", "get" )
+				
+				seed1.merge( seed2 as any )
+				
+				expect( spy ).not.toHaveBeenCalled()
+				
+				seed1.value
+				seed1.value
+				seed1.value
+				
+				expect( spy ).toHaveBeenCalledTimes( 3 )
+				
+				spy.mockRestore()
 			} )
 		} )
 	} )
 	
 	
-	function makeDynamicSeed( blueprint = jest.fn(), id: number = 0 )
+	function makeDynamicSeed<T>( blueprint: ( faker: FakerStatic, id: number ) => T = jest.fn(), id: number = 0 )
 	{
 		return {
 			seed: new DynamicSeed( blueprint, id ),
