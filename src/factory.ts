@@ -17,8 +17,9 @@ export function factory<T>(
 {
 	let currId: seedId = 1
 	
+	// @todo: return new builder
 	return ( overrides = {}, ...statesToApply: string[] ) => {
-		const appliedStates: Seed<DeepPartial<T>> = mapStateNamesToSeeds( statesToApply, states )
+		const appliedStates: Seed<DeepPartial<T>> = mapStateNamesToSeeds( statesToApply, states ) // @todo: this is awkward, maybe some kind of a "state"/"build" object ?
 		
 		return Seed
 			.from( blueprint, currId++ )

@@ -36,11 +36,11 @@ export class Seed<T>
 	
 	
 	
-	private static __id: seedId = 1
+	private static __id: seedId = 1 // @todo: this is not needed for simple seed
 	
-	static NullSeed = Seed.from( {} )
+	static NullSeed = Seed.from( {} ) // @todo: this belongs to abstract class or dedicated factory
 	
-	static generator: FakerStatic = faker
+	static generator: FakerStatic = faker // @todo: this belongs to dynamic seed
 	
 	
 	static from<T>( userSeed: seed<T>, id?: seedId ): Seed<T>
