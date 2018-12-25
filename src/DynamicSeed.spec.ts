@@ -1,47 +1,11 @@
 import FakerStatic = Faker.FakerStatic
 import * as Faker from "faker"
 import { DeepPartial } from "./factory"
-import { SimpleSeed, testobject } from "./SimpleSeed.spec"
-import _merge from "lodash.merge"
+import { testobject } from "./SimpleSeed.spec"
+import { SimpleSeed } from "./SimpleSeed"
+import { DynamicSeed } from "./DynamicSeed"
 
 
-
-
-export interface ISeed<T>
-{
-	value: T
-	merge: ( seed: ISeed<DeepPartial<T>> ) => ISeed<T>
-}
-
-class DynamicSeed<T> implements ISeed<T>
-{
-	private _merged: any[] = []
-	
-	
-	constructor( private _blueprint: ( faker: FakerStatic, id: number ) => T, public id: number )
-	{
-	
-	}
-	
-	
-	get value(): T
-	{
-		return this
-			._merged
-			.reduce(
-				( acc, seed ) => _merge( acc, seed.value ),
-				this._blueprint( Faker, this.id ),
-			)
-	}
-	
-	
-	merge( seed: ISeed<DeepPartial<T>> )
-	{
-		this._merged.push( seed )
-		
-		return this
-	}
-}
 
 
 describe( `DynamicSeed`, () => {
