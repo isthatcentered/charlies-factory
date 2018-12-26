@@ -1,39 +1,23 @@
-import { ISeed } from "./DynamicSeed"
+import { ISeed, SeedTemplate } from "./DynamicSeed"
 import _cloneDeep from "lodash.clonedeep"
-import _merge from "lodash.merge"
-import { DeepPartial } from "./factory"
 
 
 
 
-export class SimpleSeed<T> implements ISeed<T>
+export class SimpleSeed<T> extends SeedTemplate<T> implements ISeed<T>
 {
 	private _value: T
-	private _merged: ISeed<DeepPartial<T>>[] = []
 	
 	
 	constructor( blueprint: T )
 	{
+		super()
 		this._value = _cloneDeep( blueprint )
 	}
 	
 	
-	get value()
+	protected _compile()
 	{
-		this._merged
-			.reduce(
-				( acc, seed ) => _merge( acc, seed.value ),
-				this._value,
-			)
 		return this._value
-	}
-	
-	
-	merge( seed: ISeed<DeepPartial<T>> )
-	{
-		
-		this._merged.push( seed )
-		
-		return this
 	}
 }
