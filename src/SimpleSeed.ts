@@ -1,5 +1,6 @@
-import { ISeed, SeedTemplate } from "./DynamicSeed"
+import { SeedTemplate } from "./SeedTemplate"
 import _cloneDeep from "lodash.clonedeep"
+import { ISeed } from "./SeedTemplate"
 
 
 

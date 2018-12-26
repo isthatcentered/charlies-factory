@@ -1,43 +1,10 @@
-import { DeepPartial } from "./factory"
-import _merge from "lodash.merge"
 import * as Faker from "faker"
+import { SeedTemplate } from "./SeedTemplate"
+import _cloneDeep from "lodash.clonedeep"
 import FakerStatic = Faker.FakerStatic
 
 
 
-
-export interface ISeed<T>
-{
-	value: T
-	merge: ( seed: ISeed<DeepPartial<T>> ) => ISeed<T>
-}
-
-export abstract class SeedTemplate<T> implements ISeed<T>
-{
-	private _merged: any[] = []
-	
-	
-	get value(): T
-	{
-		return this
-			._merged
-			.reduce(
-				( acc, seed ) => _merge( acc, seed.value ),
-				this._compile(),
-			)
-	}
-	
-	
-	merge( seed: ISeed<DeepPartial<T>> )
-	{
-		this._merged.push( seed )
-		
-		return this
-	}
-	
-	
-	protected abstract _compile(): T
-}
 
 export class DynamicSeed<T> extends SeedTemplate<T>
 {
@@ -51,6 +18,6 @@ export class DynamicSeed<T> extends SeedTemplate<T>
 	
 	protected _compile()
 	{
-		return this._blueprint( Faker, this.id )
+		return _cloneDeep( this._blueprint( Faker, this.id ) )
 	}
 }
