@@ -41,6 +41,24 @@ describe( `SimpleSeed`, () => {
 			expect( seed.value ).not.toBe( BLUEPRINT )
 			expect( seed.value.nested ).not.toBe( BLUEPRINT.nested )
 		} )
+		
+		test( `Keeps dynamisms of merged in seed by only calling .value when asked for it's own value`, () => {
+			const seed1 = new SimpleSeed( BLUEPRINT ),
+			      seed2 = new SimpleSeed( BLUEPRINT ),
+			      spy   = jest.spyOn( seed2, "value", "get" )
+			
+			seed1.merge( seed2 )
+			
+			expect( spy ).not.toHaveBeenCalled()
+			
+			seed1.value
+			seed1.value
+			seed1.value
+			
+			expect( spy ).toHaveBeenCalledTimes( 3 )
+			
+			spy.mockRestore()
+		} )
 	} )
 	
 	describe( `merge()`, () => {
