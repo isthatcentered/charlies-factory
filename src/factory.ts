@@ -12,11 +12,11 @@ export type DeepPartial<T> = {[P in keyof T]?: DeepPartial<T[P]>}
 
 export function factory<T>( blueprint: seed<T>, states: { [ name: string ]: partialSeed<T> } = {} ): ( overrides?: partialSeed<T>, ...statesToApply: string[] ) => T
 {
-	const builder = new Builder( blueprint, states )
+	const _builder = new Builder( blueprint, states )
 	
 	return ( overrides = {}, ...statesToApply: string[] ) => {
 		
-		return builder.apply( ...statesToApply ).make( overrides )
+		return _builder.apply( ...statesToApply ).make( overrides )
 	}
 }
 

@@ -3,66 +3,74 @@ import { Builder } from "./Builder"
 
 
 
+interface testBlueprint
+{
+	key: string,
+	otherKey: string
+}
+
 describe( `Builder`, () => {
+	let BLUEPRINT: testBlueprint,
+	    OVERRIDES: Partial<testBlueprint>,
+	    STATES: { [ name: string ]: Partial<testBlueprint> }
+	
+	beforeEach( () => {
+		BLUEPRINT = Object.freeze( { key: "key", otherKey: "otherKey" } )
+		OVERRIDES = Object.freeze( { key: "key", otherKey: "otherKey" } )
+		STATES = Object.freeze( {
+			state1: { key: "overriden_by_state_1" },
+			state2: { otherKey: "overriden_by_state_2" },
+		} )
+	} )
+	
 	describe( `make()`, () => {
 		test( `Default`, () => {
-			const blueprint = Object.freeze( { key: "key", otherKey: "otherKey" } ),
-			      builder   = new Builder( blueprint, {} )
+			const builder = new Builder( BLUEPRINT, {} )
 			
-			expect( builder.make() ).toEqual( blueprint )
+			expect( builder.make() ).toEqual( BLUEPRINT )
 		} )
 		
 		test( `With overrides`, () => {
-			const blueprint = Object.freeze( { key: "key", otherKey: "otherKey" } ),
-			      overrides = Object.freeze( { key: "key", otherKey: "otherKey" } ),
-			      builder   = new Builder( blueprint, {} )
+			const builder = new Builder( BLUEPRINT, {} )
 			
-			expect( builder.make( overrides ) ).toEqual( { ...blueprint, ...overrides } )
+			expect( builder.make( OVERRIDES ) ).toEqual( { ...BLUEPRINT, ...OVERRIDES } )
 		} )
 		
 		test( `With states`, () => {
-			const blueprint = Object.freeze( { key: "key", otherKey: "otherKey" } ),
-			      states    = Object.freeze( {
-				      state1: { key: "overriden_by_state_1" },
-				      state2: { otherKey: "overriden_by_state_2" },
-			      } ),
-			      builder   = new Builder( blueprint, states )
+			const builder = new Builder( BLUEPRINT, STATES )
 			
 			expect( builder.apply( "state1", "state2" ).make() ).toEqual( {
-				...blueprint,
-				...states.state1,
-				...states.state2,
+				...BLUEPRINT,
+				...STATES.state1,
+				...STATES.state2,
 			} )
 		} )
 		
 		test( `Resets triggered states config on make`, () => {
-			const blueprint = Object.freeze( { key: "key", otherKey: "otherKey" } ),
-			      states    = Object.freeze( {
-				      state: { key: "overriden_by_state_1" },
-			      } ),
-			      builder   = new Builder( blueprint, states )
+			const builder = new Builder( BLUEPRINT, STATES )
 			
-			expect( builder.apply( "state" ).make() ).toEqual( {
-				...blueprint,
-				...states.state,
+			expect( builder.apply( "state1", "state2" ).make() ).toEqual( {
+				...BLUEPRINT,
+				...STATES.state1,
+				...STATES.state2,
 			} )
 			
-			expect( builder.make() ).toEqual( blueprint )
+			expect( builder.make() ).toEqual( BLUEPRINT )
 		} )
 		
 		test( `Attaches an id to each seed`, () => {
-			const blueprint = jest.fn().mockReturnValue( {} ), // id is only provided to function seeds
-			      builder   = new Builder( blueprint, {} )
+			const spyableBlueprint = jest.fn().mockReturnValue( {} ), // id is only provided to function seeds
+			      builder          = new Builder( spyableBlueprint, {} )
 			
 			builder.make()
 			builder.make()
 			builder.make()
 			builder.make()
 			
-			expect( blueprint ).toHaveBeenNthCalledWith( 1, expect.anything(), 1 )
-			expect( blueprint ).toHaveBeenNthCalledWith( 2, expect.anything(), 2 )
-			expect( blueprint ).toHaveBeenNthCalledWith( 3, expect.anything(), 3 )
-			expect( blueprint ).toHaveBeenNthCalledWith( 4, expect.anything(), 4 )
+			expect( spyableBlueprint ).toHaveBeenNthCalledWith( 1, expect.anything(), 1 )
+			expect( spyableBlueprint ).toHaveBeenNthCalledWith( 2, expect.anything(), 2 )
+			expect( spyableBlueprint ).toHaveBeenNthCalledWith( 3, expect.anything(), 3 )
+			expect( spyableBlueprint ).toHaveBeenNthCalledWith( 4, expect.anything(), 4 )
 		} )
 	} )
 } )
