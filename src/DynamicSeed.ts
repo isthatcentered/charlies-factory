@@ -12,15 +12,9 @@ export interface ISeed<T>
 	merge: ( seed: ISeed<DeepPartial<T>> ) => ISeed<T>
 }
 
-export class DynamicSeed<T> implements ISeed<T>
+export abstract class SeedTemplate<T> implements ISeed<T>
 {
 	private _merged: any[] = []
-	
-	
-	constructor( private _blueprint: ( faker: FakerStatic, id: number ) => T, public id: number )
-	{
-	
-	}
 	
 	
 	get value(): T
@@ -29,7 +23,7 @@ export class DynamicSeed<T> implements ISeed<T>
 			._merged
 			.reduce(
 				( acc, seed ) => _merge( acc, seed.value ),
-				this._blueprint( Faker, this.id ),
+				this._compile(),
 			)
 	}
 	
@@ -39,5 +33,24 @@ export class DynamicSeed<T> implements ISeed<T>
 		this._merged.push( seed )
 		
 		return this
+	}
+	
+	
+	protected abstract _compile(): T
+}
+
+export class DynamicSeed<T> extends SeedTemplate<T>
+{
+	
+	
+	constructor( private _blueprint: ( faker: FakerStatic, id: number ) => T, public id: number )
+	{
+		super()
+	}
+	
+	
+	protected _compile()
+	{
+		return this._blueprint( Faker, this.id )
 	}
 }
