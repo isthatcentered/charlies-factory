@@ -8,11 +8,11 @@ import { DynamicSeed } from "./DynamicSeed"
 const seeds = [
 	{
 		name:     "SimpleSeed",
-		makeSeed: ( blueprint: any ) => new SimpleSeed( blueprint ),
+		makeSeed: ( blueprint: any, id = 0 ) => new SimpleSeed( blueprint, id ),
 	},
 	{
 		name:     "DynamicSeed",
-		makeSeed: ( blueprint: any ) => new DynamicSeed( () => blueprint, 0 ),
+		makeSeed: ( blueprint: any, id = 0 ) => new DynamicSeed( () => blueprint, id ),
 	},
 ]
 
@@ -45,6 +45,13 @@ describe( `Seed contracts`, () => {
 						someOtherNestedKey: "overriden",
 					},
 				}
+			} )
+			
+			describe( `.id`, () => {
+				test( `Each seed has an id`, () => {
+					const ID = 111
+					expect( makeSeed( {}, ID ).id ).toBe( ID )
+				} )
 			} )
 			
 			describe( `.value`, () => {

@@ -1,6 +1,5 @@
-import { SeedTemplate } from "./SeedTemplate"
+import { ISeed, SeedTemplate } from "./SeedTemplate"
 import _cloneDeep from "lodash.clonedeep"
-import { ISeed } from "./SeedTemplate"
 
 
 
@@ -10,9 +9,9 @@ export class SimpleSeed<T> extends SeedTemplate<T> implements ISeed<T>
 	private _value: T
 	
 	
-	constructor( blueprint: T )
+	constructor( blueprint: T, id: number )
 	{
-		super()
+		super( id )
 		this._value = _cloneDeep( blueprint )
 	}
 	

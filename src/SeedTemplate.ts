@@ -6,6 +6,7 @@ import _merge from "lodash.merge"
 
 export interface ISeed<T>
 {
+	id: number
 	value: T
 	merge: ( seed: ISeed<DeepPartial<T>> ) => ISeed<T>
 }
@@ -13,6 +14,11 @@ export interface ISeed<T>
 export abstract class SeedTemplate<T> implements ISeed<T>
 {
 	private _merged: any[] = []
+	
+	
+	constructor( public id: number )
+	{
+	}
 	
 	
 	get value(): T
