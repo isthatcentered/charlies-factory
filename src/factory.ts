@@ -1,4 +1,3 @@
-import { seedId } from "./Seed"
 import { SimpleSeed } from "./SimpleSeed"
 import { DynamicSeed } from "./DynamicSeed"
 import { ISeed } from "./SeedTemplate"
@@ -7,7 +6,7 @@ import FakerStatic = Faker.FakerStatic
 
 
 
-export type dynamicSeed<T> = ( generator: FakerStatic, id: seedId ) => T
+export type dynamicSeed<T> = ( generator: FakerStatic, id: number ) => T
 export type seed<T> = T | dynamicSeed<T>
 export type partialSeed<T> = seed<DeepPartial<T>>
 export type DeepPartial<T> = {[P in keyof T]?: DeepPartial<T[P]>}
@@ -23,7 +22,7 @@ export function factory<T>(
 	states: { [ name: string ]: partialSeed<T> } = {},
 ): ( overrides?: partialSeed<T>, ...statesToApply: string[] ) => T
 {
-	let currId: seedId = 1
+	let currId: number = 1
 	
 	// @todo: return new builder
 	return ( overrides = {}, ...statesToApply: string[] ) => {

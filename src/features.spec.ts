@@ -1,7 +1,6 @@
 import { pack } from "./pack"
 import * as Faker from "faker"
 import { factory } from "./factory"
-import { seedId } from "./Seed"
 import FakerStatic = Faker.FakerStatic
 
 
@@ -122,7 +121,7 @@ describe( `factory()`, () => {
 	} )
 	
 	describe( `Data generator`, () => {
-		let SEED: ( generator: FakerStatic, id: seedId ) => testBlueprint
+		let SEED: ( generator: FakerStatic, id: number ) => testBlueprint
 		
 		beforeEach( () => {
 			SEED = ( faker, id ) => ({ name: faker.name.findName() })

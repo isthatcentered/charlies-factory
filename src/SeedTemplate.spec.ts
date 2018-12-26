@@ -27,7 +27,7 @@ export interface testobject
 
 describe( `Seed contracts`, () => {
 	seeds.forEach( ( { name, makeSeed } ) =>
-		describe( `${ name } contract`, () => {
+		describe( `${ name }`, () => {
 			let BLUEPRINT: testobject,
 			    PARTIAL_BLUEPRINT_OVERRIDE: DeepPartial<testobject>
 			
