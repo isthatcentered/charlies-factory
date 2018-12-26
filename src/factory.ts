@@ -1,4 +1,7 @@
-import { Seed, seedId } from "./Seed"
+import { seedId } from "./Seed"
+import { SimpleSeed } from "./SimpleSeed"
+import { DynamicSeed } from "./DynamicSeed"
+import { ISeed } from "./SeedTemplate"
 import FakerStatic = Faker.FakerStatic
 
 
@@ -8,6 +11,11 @@ export type dynamicSeed<T> = ( generator: FakerStatic, id: seedId ) => T
 export type seed<T> = T | dynamicSeed<T>
 export type partialSeed<T> = seed<DeepPartial<T>>
 export type DeepPartial<T> = {[P in keyof T]?: DeepPartial<T[P]>}
+
+const seedFactory = <T>( blueprint: seed<T>, id: number ): ISeed<T> =>
+	typeof blueprint === "function" ?
+	new DynamicSeed( blueprint as any, id ) :
+	new SimpleSeed( blueprint, id )
 
 
 export function factory<T>(
@@ -19,21 +27,25 @@ export function factory<T>(
 	
 	// @todo: return new builder
 	return ( overrides = {}, ...statesToApply: string[] ) => {
-		const appliedStates: Seed<DeepPartial<T>> = mapStateNamesToSeeds( statesToApply, states ) // @todo: this is awkward, maybe some kind of a "state"/"build" object ?
+		const appliedStates: ISeed<DeepPartial<T>> = mapAppliedStateNamesToSeed( statesToApply, states )
 		
-		return Seed
-			.from( blueprint, currId++ )
+		return seedFactory( blueprint, currId++ )
 			.merge( appliedStates )
-			.merge( Seed.from( overrides ) )
+			.merge( seedFactory( overrides, 0 ) )
 			.value
 	}
 }
 
 
-
-function mapStateNamesToSeeds<T>( statesToApply: string[], states: { [ name: string ]: partialSeed<T> } )
+function mapAppliedStateNamesToSeed<T>(
+	names: string[],
+	states: { [ name: string ]: partialSeed<T> },
+): ISeed<DeepPartial<T>>
 {
-	return statesToApply
-		.map( stateName => Seed.from( states[ stateName ] ) )
-		.reduce( ( seed, currSeed ) => seed.merge( currSeed ), Seed.NullSeed )
+	return names
+		.map( name => seedFactory( states[ name ], 0 ) )
+		.reduce(
+			( acc, seed ) => acc.merge( seed as any ),
+			seedFactory( {}, 0 ),
+		)
 }
