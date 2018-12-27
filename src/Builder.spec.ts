@@ -1,4 +1,4 @@
-import { AcceptsPrimitivesBuilder, BusinessBuilder } from "./Builder"
+import { BusinessBuilder } from "./Builder"
 import { ISeed } from "./SeedTemplate"
 import { DeepPartial } from "./factory"
 import { SimpleSeed } from "./SimpleSeed"
