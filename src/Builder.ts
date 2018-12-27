@@ -23,8 +23,12 @@ export class Builder<T>
 	
 	apply( ...statesNames: string[] ): this
 	{
-		statesNames.forEach( name =>
-			this._build.merge( this._states[ name ] ) )
+		statesNames.forEach( name => {
+			if ( !this._states[ name ] )
+				console.warn( `🤭 Ooops, you are trying to use an unregistered ${name} state.` )
+			else
+				this._build.merge( this._states[ name ] )
+		} )
 		
 		return this
 	}
