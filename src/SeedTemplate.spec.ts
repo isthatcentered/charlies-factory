@@ -105,5 +105,21 @@ describe( `Seed contracts`, () => {
 					} )
 				} )
 			} )
+			
+			describe( `clone()`, () => {
+				test( `Returns a clone`, () => {
+					const seed  = makeSeed( BLUEPRINT ),
+					      clone = seed.clone()
+					
+					expect( clone ).not.toBe( seed )
+				} )
+				
+				test( `Clone returns the same result as original on .value`, () => {
+					const seed  = makeSeed( BLUEPRINT ),
+					      clone = seed.clone()
+					
+					expect( clone.value ).toEqual( seed.value )
+				} )
+			} )
 		} ) )
 } )

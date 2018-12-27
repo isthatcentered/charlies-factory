@@ -16,6 +16,12 @@ export class SimpleSeed<T> extends SeedTemplate<T> implements ISeed<T>
 	}
 	
 	
+	clone()
+	{
+		return new SimpleSeed( this._value, this.id )
+	}
+	
+	
 	protected _compile()
 	{
 		return this._value

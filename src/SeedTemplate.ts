@@ -8,7 +8,8 @@ export interface ISeed<T>
 {
 	id: number
 	value: T
-	merge: ( seed: ISeed<DeepPartial<T>> ) => ISeed<T>
+	merge: ( seed: ISeed<DeepPartial<T>> ) => this
+	clone: () => ISeed<T>
 }
 
 export abstract class SeedTemplate<T> implements ISeed<T>
@@ -38,6 +39,9 @@ export abstract class SeedTemplate<T> implements ISeed<T>
 		
 		return this
 	}
+	
+	
+	abstract clone(): ISeed<T>
 	
 	
 	protected abstract _compile(): T

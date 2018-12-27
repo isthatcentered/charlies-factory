@@ -10,9 +10,15 @@ export class DynamicSeed<T> extends SeedTemplate<T>
 {
 	
 	
-	constructor( private _blueprint: ( faker: FakerStatic, id: number ) => T, public id: number )
+	constructor( private _blueprint: ( faker: FakerStatic, id: number ) => T, id: number )
 	{
-		super()
+		super( id )
+	}
+	
+	
+	clone()
+	{
+		return new DynamicSeed( this._blueprint, this.id )
 	}
 	
 	
