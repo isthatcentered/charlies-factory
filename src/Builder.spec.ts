@@ -72,18 +72,10 @@ describe( `Builder`, () => {
 			expect( builder.make() ).toEqual( BLUEPRINT )
 		} )
 		
-		test( `Warns but doesn't fail when triggering unexisting states`, () => {
-			const spy = jest.spyOn( console, "warn" )
-			
+		test( `Fails when triggering unexisting state`, () => {
 			const builder = new Builder( {}, {} )
 			
-			builder.apply( "UNREGISTERED_STATE_NAME" )
-			
-			expect( () => builder.make() ).not.toThrow()
-			
-			expect( spy ).toHaveBeenCalledWith( `🤭 Ooops, you are trying to use an unregistered UNREGISTERED_STATE_NAME state.` )
-			
-			spy.mockRestore()
+			expect( () => builder.apply( "UNREGISTERED_STATE_NAME" ) ).toThrow( `trying to use an unregistered "UNREGISTERED_STATE_NAME" state` )
 		} )
 	} )
 	

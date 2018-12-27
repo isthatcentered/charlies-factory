@@ -120,6 +120,16 @@ describe( `factory()`, () => {
 		} )
 	} )
 	
+	describe( `Triggering unexisting state`, () => {
+		beforeEach( () => {
+			MAKEBLUEPRINT = factory( {}, {} )
+		} )
+		
+		test( `Doesn't fail`, () => {
+			expect( () => MAKEBLUEPRINT( undefined, "UNREGISTERED_STATE" ) ).toThrow()
+		} )
+	} )
+	
 	describe( `Data generator`, () => {
 		let SEED: ( generator: FakerStatic, id: number ) => testBlueprint
 		
