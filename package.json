@@ -52,7 +52,7 @@
         "doctoc": "^1.4.0",
         "jest": "^23.6.0",
         "publish-please": "^5.4.3",
-        "rollup": "^0.68.0",
+        "rollup": "^1.21.3",
         "rollup-plugin-babel": "^4.1.0",
         "rollup-plugin-typescript2": "^0.18.1",
         "ts-jest": "^23.10.4",
