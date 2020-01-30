@@ -48,7 +48,7 @@
         "@babel/polyfill": "^7.0.0",
         "@babel/preset-env": "^7.2.0",
         "@babel/preset-typescript": "^7.1.0",
-        "@types/jest": "^24.0.17",
+        "@types/jest": "^25.1.1",
         "doctoc": "^1.4.0",
         "jest": "^23.6.0",
         "publish-please": "^5.4.3",
